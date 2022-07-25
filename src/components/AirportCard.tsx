@@ -1,9 +1,14 @@
 import React from 'react';
+import {IAirport} from "../models/models";
 
-export const AirportCard = () => {
+interface AirportCardProps  {
+    airport: IAirport
+}
+
+export const AirportCard = ({airport}:AirportCardProps) => {
     return (
-        <div>
-            Card
+        <div className=''>
+            {airport.name}
         </div>
     );
 };
