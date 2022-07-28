@@ -1,7 +1,7 @@
 import axios from "../../axios";
 import {AppDispatch} from "../index";
 import {IAirport, ServerResponse} from "../../models/models";
-import {airportSlice} from "../slices/AirportSlice";
+import {airportSlice} from "../slices/airportSlice";
 
 export const fetchAirports = (page:number, count:number) => {
     return async (dispatch: AppDispatch) => {
