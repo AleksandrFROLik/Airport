@@ -1,4 +1,4 @@
-import {IAirportCountry, IAirportRegion, IAirportType} from "../../models/models";
+import {IAirportCountry, IAirportRegion, IAirportType, IFilter} from "../../models/models";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
@@ -41,7 +41,7 @@ export const handBooksSlice = createSlice({
         fetchError(state, action: PayloadAction<Error>) {
             state.loading = false
             state.error = action.payload.message
-        }
+        },
     }
 })
 

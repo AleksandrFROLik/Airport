@@ -1,20 +1,39 @@
-import {useAppSelector} from "../hooks/redux";
-import {ChangeEvent, useState} from "react";
+import {useAppDispatch, useAppSelector} from "../hooks/redux";
+import {ChangeEvent, useEffect, useState} from "react";
 import {IFilter} from "../models/models";
+import {airportSlice} from "../store/slices/airportSlice";
 
 export const AirportFilter = () => {
-
+    const dispatch = useAppDispatch()
     const {types, regions, countries, loading, error} = useAppSelector(state => state.handBooks)
     const [filter, setFilter] = useState<IFilter>({
         type: '',
         region: '',
         country: ''
     })
+    const [hasFilter, setHasFilter] = useState(false)
+    const isFilterEnabled = () => {
+        return filter.type || filter.region || filter.country
+    }
+
+    useEffect(() => {
+        if (isFilterEnabled()) {
+            setHasFilter(true)
+        } else {
+            setHasFilter(false)
+        }
+
+        dispatch(airportSlice.actions.fetchFilterAirports(filter))
+    }, [filter])
 
     if (loading) return <p className='text-center'>Loading...</p>
 
     const handleOnChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setFilter(prev => ({...prev, [event.target.name]: event.target.value}))
+    };
+
+    const clearFilter = () => {
+        setFilter({type: '', region: '', country: ''})
     };
 
     return (
@@ -45,6 +64,11 @@ export const AirportFilter = () => {
                 <option value="" disabled>Country</option>
                 {countries.map(country => <option key={country}>{country}</option>)}
             </select>
+            {hasFilter &&
+            <button
+                className='py-1 px-4 bg-red-700 text-white rounded'
+                onClick={clearFilter}>&times;
+            </button>}
 
         </div>
     );

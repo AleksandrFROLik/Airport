@@ -43,7 +43,7 @@ export const AirportSearch = () => {
                    placeholder='Type something here...'
                    {...input}
             />
-            {dropDown && <ul className='absolute  left-0 right-0 h-[200px]  top-[42px] shadow-md list-none bg-white overflow-y-scroll'>
+            {dropDown && <ul className='absolute  left-0 right-0 h-[200px]  top-[42px] shadow-md list-none bg-white '>
                 {
                     searchedAirports.map(searchedAirport =>
                         <li key={searchedAirport.id}
