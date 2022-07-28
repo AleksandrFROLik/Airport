@@ -2,7 +2,7 @@ import {Route, Routes} from "react-router-dom";
 import {MainPage} from "./pages/MainPage";
 import {AuthPage} from "./pages/AuthPage";
 import {AirportDetailPage} from "./pages/AirportDetailPage";
-import {Navigation} from "./components/Navigation";
+import {Navigation} from "./components/Navigation"
 
 export const App = () => (
     <>
