@@ -39,3 +39,8 @@ export interface IAirportDetail {
     region: string
     type: string
 }
+
+export interface IAuth {
+    username:string
+    password:string
+}

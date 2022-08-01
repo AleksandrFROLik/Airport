@@ -34,6 +34,14 @@ export const authSlice = createSlice({
 
       localStorage.setItem(ACCESS_KEY, action.payload.access)
       localStorage.setItem(USERNAME_KEY, action.payload.username)
+    },
+    logout(state) {
+      state.access = ''
+      state.username = ''
+      state.isAuth = false
+
+      localStorage.removeItem(ACCESS_KEY)
+      localStorage.removeItem(USERNAME_KEY)
     }
   }
 })

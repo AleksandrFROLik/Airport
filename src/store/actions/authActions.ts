@@ -26,3 +26,18 @@ export const fetchAuth = (data: AuthData) => {
     }
   }
 }
+
+export const fetchLogin = (data: AuthData) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const response = await axios.post<AuthResponse>(`auth/login`, data)
+      dispatch(authSlice.actions.register({
+        username: data.username,
+        access: response.data.access,
+      }))
+
+    } catch (e) {
+      console.log('error', e)
+    }
+  }
+}

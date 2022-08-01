@@ -1,50 +1,73 @@
-import { FormEvent } from "react";
-import { useInput } from "../hooks/inputHooks";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { fetchAuth } from "../store/actions/authActions";
-import { useDebounce } from "../hooks/debounceHook";
+import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { useAppDispatch } from "../hooks/redux";
+import { fetchLogin } from "../store/actions/authActions";
 import { useNavigate } from "react-router-dom";
-
-const DELAY = 100
+import { IAuth } from '../models/models';
 
 export const AuthPage = () => {
-  const username = useInput('')
-  const password = useInput('')
-  const debounceUsername = useDebounce(username.value, DELAY)
-  const debouncePassword = useDebounce(password.value, DELAY)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
+  const [form, setForm] = useState<IAuth>({
+    password: '',
+    username: ''
+  })
 
-  const dispatch = useAppDispatch()
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => event.preventDefault()
-  const isFormValue = () => username.value && password.value
+  const isFormValid = () => {
+    return form.password.trim().length && form.username.trim().length
+  }
 
-  const handleRegister = () => {
-    if (isFormValue()) dispatch(fetchAuth({username: debounceUsername, password: debouncePassword}))
-    navigate('/')
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setForm(prev => ({...prev, [event.target.name]: event.target.value}))
+  }
+
+  const handleLogin = async(event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    if (isFormValid()) {
+      await dispatch(fetchLogin(form))
+      navigate('/')
+    } else {
+      alert('Form is invalid!')
+    }
   };
 
   return (
-    <form className='container mx-auto max-w-[500px] pt-8 border py-1 px-2'
-          onSubmit={handleSubmit}>
-      <div className=' mb-2'>
-        <label htmlFor="username" className='block'>Username</label>
-        <input type="text"
-               id='username'
-               className='border py-1 px-2 w-full'
-               {...username}
-        />
+    <form
+      className="container mx-auto mt-8 p-4 flex justify-center"
+      onSubmit={handleSubmit}
+    >
+      <div>
+        <div>
+          <label htmlFor="username" className="mr-2">Username</label>
+          <input type="text" id="username" className="border" name="username" onChange={handleChange}/>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="password" className="mr-2">Password</label>
+          <input
+            type="password"
+            id="password"
+            className="border"
+            name="password" onChange={handleChange}/>
+        </div>
+
+        <button
+          type="submit"
+          className="border py-2 px-4 mr-4"
+        >
+          Register
+        </button>
+
+        <button
+          type="button"
+          className="border py-2 px-4"
+          onClick={handleLogin}
+        >
+          Login
+        </button>
       </div>
-      <div className=''>
-        <label htmlFor="password" className='block'>Password</label>
-        <input type="password"
-               id='password'
-               className='border py-1 px-2 w-full mb-2'
-               {...password}
-        />
-      </div>
-      <button className='py-2 px-4 bg-blue-700 text-white-500' onClick={handleRegister}>Register</button>
     </form>
   );
 };
