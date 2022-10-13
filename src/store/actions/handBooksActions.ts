@@ -21,6 +21,7 @@ export const fetchHandBooks = () => {
 
     } catch (e) {
       dispatch(airportSlice.actions.fetchError(e as Error))
+      const run = 'run'
     }
   }
 }
